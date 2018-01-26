@@ -3,10 +3,12 @@ import zulip
 import requests
 from geocode import Geocode
 from weather import Weather 
+from dict import Dictionary
 p = pprint.PrettyPrinter()
 BOT_MAIL = "awesome-bot@chunkzz.zulipchat.com"
 geo = Geocode()
 weather  = Weather()
+dict = Dictionary()
 class ZulipBot(object):
 	def __init__(self):
 		self.client = zulip.Client(site="https://chunkzz.zulipchat.com/api/")
@@ -42,13 +44,16 @@ class ZulipBot(object):
 				"content": "**"+"Weather update of "+place+"**"+"\n"+"Summary : " + "**"+result["currently"]["summary"]+"**"+"\n"+"Temparature : " +"**"+ str(result["currently"]["temperature"])+"**" +'\n'
 				+"Apparent Temparature : "+"**"+str(result["currently"]["apparentTemperature"])+"**"+"\n"+"Dew Point : "+"**"+str(result["currently"]["dewPoint"])+"**"+"\n"+"Humidity : "+"**"+str(result["currently"]["humidity"])+"**"  
 				})
-		''' elif "omega" in content:
+		elif content[2] == "means" and content[0] == "omega" :
+			word = content[1]
+			result=dict.words(word)
+			print(result)
 			self.client.send_message({
 				"type": "stream",
 				"subject": msg["subject"],
 				"to": msg["display_recipient"],
-				"content": "Alas! Finally you called me :blush:"
-				}) '''
+				"content": "**"+word+" means :"+"**"+'\n'+result  
+				})		
 		else:
 			return
 

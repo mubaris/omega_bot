@@ -29,7 +29,7 @@ Easy way to check you PNR status without going to other sites.
 
 ###  Crypto Currency :
 `leave command here"`  
-![](./screenshots/CC.png)  
+![](./screenshots/crypto.png)  
 
 
 ###  Must Read :  
@@ -52,9 +52,15 @@ Send mails while you chat :wink:
 ```omega shortenurl <url>```  
 ![](./screenshots/urlshortener.png)  
 
-###  Weather:     
+###  Weather:
+This integration will help you to know the weather of any place you type.     
 `omega weather <place>`  
-![](./screenshots/weather.png)  
+![](./screenshots/weather.png)
+
+###  Dictionary:
+This integration is like a typical dictionary.The source of the dictionary is Oxford so the answers are more reliable and correct.      
+`omega <word> means`  
+![](./screenshots/dictionary.png)
 
 ###  Gif Chat :
 `leave command here"`  
