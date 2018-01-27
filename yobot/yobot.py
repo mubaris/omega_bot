@@ -1,18 +1,9 @@
-from __future__ import print_function
 import zulip
-import sys
 import pprint
 import requests
-import httplib2
 import os
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-from apiclient.discovery import build
-from apiclient.errors import HttpError
-from oauth2client.tools import argparser
 import json
+
 #initialise pprint
 p = pprint.PrettyPrinter()
 bot_id = 'yobot-bot@chunkzz.zulipchat.com'
@@ -27,6 +18,7 @@ class Yobot(object):
 			self.client.add_subscriptions([{'name': stream['name']}])
 
 	def process_bot(self, msg):
+		print("hithere")
 		all_streams = self.client.get_streams()['streams']
 		content = msg['content'].split()
 		sender_mail = msg['sender_email']
@@ -64,6 +56,22 @@ class Yobot(object):
 					"subject": stream_topic,
 					"content": response['id']
 					})
+			if content[1] == 'hackernews':
+				stories_id = requests.get('https://hacker-news.firebaseio.com/v0/topstories.json').json()
+				hack_data = ""
+				i = 1
+				for story_id in stories_id:
+					hacker_data = requests.get('https://hacker-news.firebaseio.com/v0/item/' + str(story_id) + '.json?print=pretty').json()
+					hack_data = hack_data + (str(i) + '. [' + hacker_data['title'] + '](' + hacker_data['url'] + ')\n')
+					i = i + 1
+					if (i == 11):
+						break
+				self.client.send_message({
+						"type": "stream",
+						"to": stream_name,
+						"subject": stream_topic,
+						"content": hack_data
+						})
 		else:
 			return
 

@@ -1,6 +1,7 @@
 # Welcome to Omega-Bot!
 ## Team Chunkzz
-**Omega-Bot**  is an a zulip chatbot   
+![](/screenshots/logo.png)
+**Omega-Bot**  is a zulip chatbot   
 
 
 # Features
