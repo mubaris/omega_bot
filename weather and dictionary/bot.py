@@ -46,8 +46,8 @@ class ZulipBot(object):
 				"content": "**"+"Weather update of "+place+"**"+"\n"+"Summary : " + "**"+result["currently"]["summary"]+"**"+"\n"+"Temparature : " +"**"+ str(result["currently"]["temperature"])+"**" +'\n'
 				+"Apparent Temparature : "+"**"+str(result["currently"]["apparentTemperature"])+"**"+"\n"+"Dew Point : "+"**"+str(result["currently"]["dewPoint"])+"**"+"\n"+"Humidity : "+"**"+str(result["currently"]["humidity"])+"**"  
 				})
-		elif content[2] == "means" and content[0] == "omega" :
-			word = content[1]
+		elif content[1] == "define" and content[0] == "omega" :
+			word = content[2]
 			result=dict.words(word)
 			print(result)
 			self.client.send_message({
