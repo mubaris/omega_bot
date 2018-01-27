@@ -114,7 +114,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "Screenshot taken :wink:\n[Screenshot Link]("+result+")"
 					})
-			if content[1] == "tell" and content[2] == "a" and content[3] == "joke":
+			if content[1] == "tell" and content[-1] == "joke":
 				text = self.joke.tellJoke()
 				self.client.send_message({
 					"type": "stream",
