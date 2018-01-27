@@ -40,8 +40,8 @@ when we are in a group chat and if we want someone who is not online now to read
 
 ###  Motivate:
 Motivate is here to help you with motivational quotes when you are down :smile:  
-`leave command here"`  
-![](./screenshots/CC.png)  
+```omega motivate```  
+![](./screenshots/motivate.png)  
 
 ###  Mail:
 Send mails while you chat :wink:  
@@ -49,8 +49,8 @@ Send mails while you chat :wink:
 ![](./screenshots/CC.png)  
 
 ###  URL Shortner:
-`leave command here"`  
-![](./screenshots/CC.png)  
+```omega shortenurl <url>```  
+![](./screenshots/urlshortener.png)  
 
 ###  Weather:     
 `omega weather <place>`  
