@@ -23,6 +23,7 @@ Easy way to check you PNR status without going to other sites.
 <br>
 `omega pnr "pnr number"` 
 <br> 
+
 ![](./screenshots/PNR.png)
 
 
