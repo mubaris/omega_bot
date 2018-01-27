@@ -108,12 +108,12 @@ This integration cracks some really good as well as lame jokes !.
 ![](./screenshots/twitter2.png)
 
 ###  Poll :
-`omega poll create "Number of options" question "place the question here" option "place the options"`
-`omega poll show "id"`
-`omega poll show all`
-`omega poll vote "id" "option"`
-`omega poll delete id`
-`omega poll delete all`
+`omega poll create "Number of options" question "place the question here" option "place the options"`  
+`omega poll show "id"`  
+`omega poll show all`  
+`omega poll vote "id" "option"`  
+`omega poll delete id`  
+`omega poll delete all`  
 ![](./screenshots/poll.gif) 
 
 ###  Screenshot :
