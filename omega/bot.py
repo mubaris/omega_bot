@@ -37,8 +37,8 @@ class ZulipBot(object):
 	def __init__(self):
 		self.client = zulip.Client(site="https://chunkzz.zulipchat.com/api/")
 		self.subscribe_all()
-		#self.chatbot = ChatBot("Omega", trainer='chatterbot.trainers.ChatterBotCorpusTrainer')
-		#self.chatbot.train("chatterbot.corpus.english")
+		self.chatbot = ChatBot("Omega", trainer='chatterbot.trainers.ChatterBotCorpusTrainer')
+		self.chatbot.train("chatterbot.corpus.english")
 		self.crypto = Crypto()
 		self.trans = Translate()
 		self.g = Giphy()
@@ -138,7 +138,7 @@ class ZulipBot(object):
 		return message		
 
 	def process(self, msg):
-		content = msg["content"].lower().split()
+		content = msg["content"].split()
 		sender_email = msg["sender_email"]
 		ttype = msg["type"]
 		stream_name = msg['display_recipient']
@@ -151,9 +151,9 @@ class ZulipBot(object):
 
 		print("yeah")
 
-		if content[0] == "omega" or content[0] == "@**omega**":
-			if content[1] == "crypto":
-				if len(content) > 3 and content[3] == "in":
+		if content[0].lower() == "omega" or content[0] == "@**omega**":
+			if content[1].lower() == "crypto":
+				if len(content) > 3 and content[3].lower() == "in":
 					message = self.crypto.get_price(content[2], content[4])
 				else:
 					message = self.crypto.get_price(content[2])
@@ -163,7 +163,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message
 					})
-			if content[1] == "translate":
+			if content[1].lower() == "translate":
 				ip = content[2:]
 				ip = " ".join(ip)
 				message = self.trans.translate(ip)
@@ -173,8 +173,8 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message
 					})
-			if content[1] == "define":
-				word = content[2]
+			if content[1].lower() == "define":
+				word = content[2].lower()
 				result = self.dict_.words(word)
 				print(result)
 				self.client.send_message({
@@ -183,7 +183,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "**"+word+" means :"+"**"+'\n'+result  
 					})
-			if content[1] == "screenshot":
+			if content[1].lower() == "screenshot":
 				result = self.ss.get_ss(content[2])
 				print(result)
 				self.client.send_message({
@@ -192,7 +192,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "Screenshot taken :wink:\n[Screenshot Link]("+result+")"
 					})
-			if content[1] == "joke":
+			if content[1].lower() == "joke":
 				text = self.joke.tellJoke()
 				self.client.send_message({
 					"type": "stream",
@@ -200,7 +200,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": text  
 					})
-			if content[1] == "weather":
+			if content[1].lower() == "weather":
 				place = " ".join(content[2:])
 				try:
 					result = self.weather.getWeather(self.geo.convert(place))
@@ -213,7 +213,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message  
 				})
-			if content[1] == "giphy":
+			if content[1].lower() == "giphy":
 				text = content[2:]
 				text = " ".join(text)
 				im = str(self.g.search(text))
@@ -224,7 +224,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message
 					})
-			if content[1] == 'memo':
+			if content[1].lower() == 'memo':
 				credentials = gdrivesignin.get_credentials()
 				http = credentials.authorize(httplib2.Http())
 				service = discovery.build('drive', 'v3', http=http)
@@ -241,7 +241,7 @@ class ZulipBot(object):
 						"subject": stream_topic,
 						"content": 'Memo created.\nView & edit it at: ' + web_link
 						})
-			if content[1] == "pnr":
+			if content[1].lower() == "pnr":
 				message = self.pnr.get_pnr(content[2])
 				self.client.send_message({
 					"type": "stream",
@@ -249,7 +249,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message
 					})
-			if content[1] == "mustread":
+			if content[1].lower() == "mustread":
 				email = self.mustread.get_email(self.client.get_members(),msg["content"])
 				senderusername = self.mustread.get_username(self.client.get_members(),msg["sender_email"])
 				print(email)
@@ -258,8 +258,8 @@ class ZulipBot(object):
 					"to": email,
 					"content": "**"+senderusername+"** mentioned you in must read ! \nThe message says : "+" ".join(content[2:])
 					})
-			if content[1] == "poll":
-				if content[2] == "create":
+			if content[1].lower() == "poll":
+				if content[2].lower() == "create":
 					print(",".join(content[4:]))
 					idno = self.poll.create_poll(content[3],content[4:])
 					self.client.send_message({
@@ -268,8 +268,8 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "Poll Successfully Created and id is : **"+str(idno)+"**"
 					})
-				elif content[2] == "show":
-					if content[3]=="all":
+				elif content[2].lower() == "show":
+					if content[3].lower() == "all":
 						polldetails = self.poll.show_allpoll()
 						self.client.send_message({
 						"type": "stream",
@@ -285,7 +285,7 @@ class ZulipBot(object):
 						"to": msg["display_recipient"],
 						"content": "Poll ID: **"+polldetails["id"]+"**\n Question : **"+polldetails["pollname"]+"**\nOption : **"+polldetails["options"]+"**\n Votes : **"+polldetails["votes"]+"**"
 						})
-				elif content[2] == "vote":
+				elif content[2].lower() == "vote":
 					vote = self.poll.vote_poll(content[3],content[4])
 					self.client.send_message({
 					"type": "stream",
@@ -293,8 +293,8 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "Your Vote Has Been Recorded!"
 					})
-				elif content[2] == "delete":
-					if content[3] == "all":
+				elif content[2].lower() == "delete":
+					if content[3].lower() == "all":
 						deleted = self.poll.delete_allpoll()
 						self.client.send_message({
 						"type": "stream",
@@ -310,7 +310,7 @@ class ZulipBot(object):
 						"to": msg["display_recipient"],
 						"content": "The given poll has been removed from database"
 						})
-			if content[1] == 'motivate':
+			if content[1].lower() == 'motivate':
 				quote_data = self.motivate.get_quote()
 				self.client.send_message({
 					"type": "stream",
@@ -318,7 +318,7 @@ class ZulipBot(object):
 					"subject": stream_topic,
 					"content": quote_data
 					})
-			if content[1] == "shorturl":
+			if content[1].lower() == "shorturl":
 				short_url = self.shortenedurl.get_shorturl(content)
 				self.client.send_message({
 					"type": "stream",
@@ -326,7 +326,7 @@ class ZulipBot(object):
 					"subject": stream_topic,
 					"content": short_url
 					})
-			if content[1] == 'hackernews' or content[1] == 'hn' or content[1] == 'HN':
+			if content[1].lower() == 'hackernews' or content[1].lower() == 'hn' or content[1].lower() == 'HN':
 				news = self.hacknews.get_hackernews()
 				self.client.send_message({
 					"type": "stream",
@@ -334,7 +334,7 @@ class ZulipBot(object):
 					"subject": stream_topic,
 					"content": news
 					})
-			if content[1] == "cricnews":
+			if content[1].lower() == "cricnews":
 				news = self.cricket.news()
 				self.client.send_message({
 					"type": "stream",
@@ -342,7 +342,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": news  
 					})
-			if content[1] == "help" and len(content) == 2:
+			if content[1].lower() == "help" and len(content) == 2:
 				message = self.help()
 				self.client.send_message({
 					"type": "stream",
@@ -350,7 +350,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message  
 					})
-			if content[1] == "help" and len(content) > 2:
+			if content[1].lower() == "help" and len(content) > 2:
 				subkey = content[2]
 				message = self.help_sub(subkey)
 				self.client.send_message({
@@ -359,7 +359,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message  
 					})
-			if content[1] == "twitter":
+			if content[1].lower() == "twitter":
 				#tweets = self.tw.get()
 				#print(tweets)
 				if len(content) > 2 and content[2] == "post":
@@ -405,7 +405,7 @@ class ZulipBot(object):
 							"to": sender_email,
 							"content": message
 							})
-			"""if content[1] not in self.subkeys:
+			if content[1] not in self.subkeys:
 				ip = content[1:]
 				ip = " ".join(ip)
 				message = self.chatbot.get_response(ip).text
@@ -414,7 +414,7 @@ class ZulipBot(object):
 					"subject": msg["subject"],
 					"to": msg["display_recipient"],
 					"content": message
-					})"""
+					})
 		if self.urls(" ".join(content)):
 			summary = self.w.wiki(" ".join(content))
 			if summary:
