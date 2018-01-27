@@ -3,6 +3,14 @@ import zulip
 import sys
 import re
 import json
+import gdrivesignin
+import httplib2
+import os
+from apiclient import discovery
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
+from apiclient.http import MediaFileUpload
 from crypto import Crypto
 from chatterbot import ChatBot
 from translate import Translate
@@ -48,7 +56,7 @@ class ZulipBot(object):
 		self.poll = Poll()
 		self.subkeys = ["crypto", "translate", "define", "tell", "weather", 
 				"giphy", "pnr", "mustread", "poll", "hackernews", "hn", "HN", "motivate",
-				"twitter", "screenshot"]
+				"twitter", "screenshot", "memo"]
 
 	def urls(self, link):
 		urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link)
@@ -124,13 +132,16 @@ class ZulipBot(object):
 					})
 			if content[1] == "weather":
 				place = " ".join(content[2:])
-				result = self.weather.getWeather(self.geo.convert(place))			
+				try:
+					result = self.weather.getWeather(self.geo.convert(place))
+					message = "**"+"Weather update of "+place+"**"+"\n"+"Summary : " + "**"+result["currently"]["summary"]+"**"+"\n"+"Temparature : " +"**"+ str(result["currently"]["temperature"])+"**" +'\n'+"Apparent Temparature : "+"**"+str(result["currently"]["apparentTemperature"])+"**"+"\n"+"Dew Point : "+"**"+str(result["currently"]["dewPoint"])+"**"+"\n"+"Humidity : "+"**"+str(result["currently"]["humidity"])+"**"			
+				except KeyError:
+					message = "Weather Info is Not Working Right Now"
 				self.client.send_message({
 					"type": "stream",
 					"subject": msg["subject"],
 					"to": msg["display_recipient"],
-					"content": "**"+"Weather update of "+place+"**"+"\n"+"Summary : " + "**"+result["currently"]["summary"]+"**"+"\n"+"Temparature : " +"**"+ str(result["currently"]["temperature"])+"**" +'\n'
-							+"Apparent Temparature : "+"**"+str(result["currently"]["apparentTemperature"])+"**"+"\n"+"Dew Point : "+"**"+str(result["currently"]["dewPoint"])+"**"+"\n"+"Humidity : "+"**"+str(result["currently"]["humidity"])+"**"  
+					"content": message  
 				})
 			if content[1] == "giphy":
 				text = content[2:]
@@ -143,6 +154,23 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": message
 					})
+			if content[1] == 'memo':
+				credentials = gdrivesignin.get_credentials()
+				http = credentials.authorize(httplib2.Http())
+				service = discovery.build('drive', 'v3', http=http)
+				file_metadata = {
+					'name': content[3],
+					'mimeType': "text/plain"
+				}
+				file = service.files().create(body=file_metadata,
+				                                    fields='id').execute()
+				web_link = service.files().get(fileId=file['id'],fields="webViewLink").execute()['webViewLink']
+				self.client.send_message({
+						"type": "stream",
+						"to": stream_name,
+						"subject": stream_topic,
+						"content": 'Memo created.\nView it at: ' + web_link['webViewLink']
+						})
 			if content[1] == "pnr":
 				message = self.pnr.get_pnr(content[2])
 				self.client.send_message({
