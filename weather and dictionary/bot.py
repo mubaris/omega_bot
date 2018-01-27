@@ -4,11 +4,13 @@ import requests
 from geocode import Geocode
 from weather import Weather 
 from dict import Dictionary
+from joke import Joke
 p = pprint.PrettyPrinter()
 BOT_MAIL = "awesome-bot@chunkzz.zulipchat.com"
 geo = Geocode()
 weather  = Weather()
 dict = Dictionary()
+joke = Joke()
 class ZulipBot(object):
 	def __init__(self):
 		self.client = zulip.Client(site="https://chunkzz.zulipchat.com/api/")
@@ -53,6 +55,14 @@ class ZulipBot(object):
 				"subject": msg["subject"],
 				"to": msg["display_recipient"],
 				"content": "**"+word+" means :"+"**"+'\n'+result  
+				})
+		elif content[1] == "tell" and content[2] == "a" and content[3] == "joke" and content[0] == "omega" :
+			text=joke.tellJoke()
+			self.client.send_message({
+				"type": "stream",
+				"subject": msg["subject"],
+				"to": msg["display_recipient"],
+				"content": text  
 				})		
 		else:
 			return

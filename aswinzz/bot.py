@@ -4,6 +4,8 @@ import sys
 from crypto import Crypto
 from pnr import Pnr
 from mustread import Mustread
+from screenshot import Ss
+from poll import Poll
 
 p = pprint.PrettyPrinter()
 BOT_MAIL = "chunkzz-bot@chunkzz.zulipchat.com"
@@ -14,6 +16,8 @@ class ZulipBot(object):
 		self.subscribe_all()
 		self.pnr = Pnr()
 		self.mustread = Mustread()
+		self.ss = Ss()
+		self.poll = Poll()
 
 	def subscribe_all(self):
 		json = self.client.get_streams()["streams"]
@@ -49,13 +53,42 @@ class ZulipBot(object):
 				"to": email,
 				"content": "**"+senderusername+"** mentioned you in must read ! \nThe message says : "+" ".join(content[2:])
 			})
-		elif "omega" in content:
-			self.client.send_message({
+			elif content[1] == "screenshot":
+				result = self.ss.get_ss(content[2])
+				print(result)
+				self.client.send_message({
 				"type": "stream",
 				"subject": msg["subject"],
 				"to": msg["display_recipient"],
-				"content": "Alas! Finally you called me :blush:"
+				"content": "Screenshot taken :wink:\n[Screenshot Link]("+result+")"
 				})
+			elif content[1] == "poll":
+				if content[2] == "create":
+					print(",".join(content[4:]))
+					idno = self.poll.create_poll(content[3],content[4:])
+					self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": "Poll Successfully Created and id is :"+str(idno)
+					})
+				elif content[2] == "show":
+					polldetails = self.poll.show_poll(content[3])
+					self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": "Poll ID:"+polldetails["id"]+"\n Question :"+polldetails["pollname"]+"\nOption :"+polldetails["options"]+"\n Votes :"+polldetails["votes"]
+					})
+				elif content[2] == "vote":
+					vote = self.poll.vote_poll(content[3],content[4])
+					self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": "Your Vote Has Been Recorded!"
+					})
+
 		else:
 			return
 
