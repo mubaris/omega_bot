@@ -21,8 +21,8 @@ Omega-Bot can :
 ###  PNR Status :
 Easy way to check you PNR status without going to other sites.  
 <br>
-<center>`omega pnr "pnr number"`</center>
-<br>  
+`omega pnr "pnr number"` 
+<br> 
 ![](./screenshots/PNR.png)
 
 
