@@ -46,6 +46,9 @@ class ZulipBot(object):
 		self.mustread = Mustread()
 		self.ss = Ss()
 		self.poll = Poll()
+		self.subkeys = ["crypto", "translate", "define", "tell", "weather", 
+				"giphy", "pnr", "mustread", "poll", "hackernews", "hn", "HN", "motivate",
+				"twitter"]
 
 	def urls(self, link):
 		urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link)
@@ -270,7 +273,7 @@ class ZulipBot(object):
 							"to": sender_email,
 							"content": message
 							})
-			else:
+			if content[1] not in self.subkeys:
 				ip = content[1:]
 				ip = " ".join(ip)
 				message = self.chatbot.get_response(ip).text
