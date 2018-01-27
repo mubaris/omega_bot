@@ -16,7 +16,6 @@ class Yobot(object):
 		self.motivate = Motivate()
 		self.shortenedurl = Urlshortener()
 		self.hacknews = Hackernews()
-		self.googledrive = Gdrive()
 		self.subscribe_streams()
 
 	def subscribe_streams(self):
