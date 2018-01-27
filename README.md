@@ -32,19 +32,19 @@ Omega-Bot can :
 ###  Twitter :
 Use Twitter directly from zulip.Make new tweets and get recent tweets all just with one line in zulip.  
 `omega twitter post "content"` or `omega twitter post_image "image url" "content"`  
-![](./screenshots/twitter.png)
+![](./screenshots/twitter.png)  
 ![](./screenshots/twitter2.png)
 
 ### Memo using Google Drive:
 Create memos stored on cloud storage on the go using our zulip Google Drive Integration.  
 `omega memo "filename.extension"`
-![](./screenshots/memo.png)
+![](./screenshots/memo.png)  
 
 ### Wikipedia Summary:
 Get a summary of the topic whose link gets messaged in zulip streams.  
 
-Just paste any wikipedia url to get the summary.
-![](./screenshots/wikipedia.png)
+Just paste any wikipedia url to get the summary.  
+![](./screenshots/wikipedia.png)  
 
 ###  PNR Status :
 Easy way to check your train PNR status without leaving Zulip.  
@@ -52,7 +52,7 @@ Easy way to check your train PNR status without leaving Zulip.
 `omega pnr "pnr number"` 
  
 
-![](./screenshots/pnr.png)
+![](./screenshots/pnr.png)  
 
 ###  URL Shortner:
 Shorten Url withing Zulip itself.  
@@ -67,21 +67,21 @@ Want to know exchange rates of crypto? Now you can check that in Zulip itself.
 ![](./screenshots/crypto.png)  
 
 ###  Translate:
-Translate messages received in different languages using out Zulip translate integration.
+Translate messages received in different languages using out Zulip translate integration.  
 `omega translate "any language"` 
 
 ![](./screenshots/translate.png)  
 
 ###  HackerNews:
-Get top 10 stories of hackernews in no time in your Zulip server.
+Get top 10 stories of hackernews in no time in your Zulip server.  
 `omega HN`  
 
-![](./screenshots/HN.png)  
+![](./screenshots/HN.png)    
 
 ### Cricket Scores:
-Know all about cricket scores without leaving Zulip. 
-`omega cricnews`
-![](./screenshots/cricnews.png)
+Know all about cricket scores without leaving Zulip.  
+`omega cricnews`  
+![](./screenshots/cricnews.png)  
 
 ###  Must Read :  
 when we are in a group chat and if we want someone who is not online now to read some important message Must Read will be usefull. what it does is the bot will leave the important message as a private message automatically.  
