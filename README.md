@@ -63,6 +63,11 @@ This integration is like a typical dictionary.The source of the dictionary is Ox
 `omega <word> means`  
 ![](./screenshots/dictionary.png)
 
+###  Joke:
+This integration cracks some really good as well as lame jokes !.     
+`omega tell a joke`  
+![](./screenshots/joke.png)
+
 ###  Gif Chat :
 `leave command here"`  
 ![](./screenshots/CC.png)  
