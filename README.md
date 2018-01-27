@@ -1,7 +1,7 @@
- <h1 align="center"> Welcome to Omega-Bot! </h1>
-<h2 align="center"> Team Chunkzz </h2>
+# Welcome to Omega-Bot!
+## Team Chunkzz
 ![](/screenshots/logo.png)
-<h2 align="center"> Omega-Bot is a zulip chatbot</h2>   
+## **Omega-Bot** is a zulip chatbot   
 
 
 # Features
