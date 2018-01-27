@@ -14,7 +14,17 @@ class Poll(object):
         except KeyError:
             message = "Invalid ID"
         return message
-
+    
+    def show_allpoll(self):
+        try:
+            data = json.load(open('poll.json'))
+            message=""
+            for i in range(0,data["polls"].__len__()):
+               message+="Poll ID: **"+data["polls"][i]["id"]+"**\n Question : **"+data["polls"][i]["pollname"]+"**\nOption : **"+data["polls"][i]["options"]+"**\n Votes : **"+data["polls"][i]["votes"]+"**\n\n\n"
+            return message
+        except KeyError:
+            message = "Something went wrong"
+        return message
     def vote_poll(self,idno,selectedoption):
         try:
             data = json.load(open('poll.json'))
@@ -39,6 +49,33 @@ class Poll(object):
             return KeyError
         except KeyError:
             message = "Invalid ID"
+        return message
+
+    def delete_poll(self,idno):
+        try:
+            data = json.load(open('poll.json'))
+            for i in range(0,data["polls"].__len__()):
+                if data["polls"][i]["id"]==idno:
+                    del data["polls"][i]
+                    with open('poll.json', mode='w', encoding='utf-8') as f:
+                        json.dump(data, f)
+                    return "Deleted"
+            return KeyError
+        except KeyError:
+            message = "Invalid ID"
+        return message
+
+    def delete_allpoll(self):
+        try:
+            data = json.load(open('poll.json'))
+            for i in range(data["polls"].__len__()-1,-1,-1):
+                del data["polls"][i]
+            with open('poll.json', mode='w', encoding='utf-8') as f:
+                json.dump(data, f)
+            return "Deleted"
+            return KeyError
+        except KeyError:
+            message = "Something went wrong"
         return message
 
     def create_poll(self,count,content):

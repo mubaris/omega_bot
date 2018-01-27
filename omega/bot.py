@@ -156,16 +156,25 @@ class ZulipBot(object):
 					"type": "stream",
 					"subject": msg["subject"],
 					"to": msg["display_recipient"],
-					"content": "Poll Successfully Created and id is :"+str(idno)
+					"content": "Poll Successfully Created and id is : **"+str(idno)+"**"
 					})
 				elif content[2] == "show":
-					polldetails = self.poll.show_poll(content[3])
-					self.client.send_message({
-					"type": "stream",
-					"subject": msg["subject"],
-					"to": msg["display_recipient"],
-					"content": "Poll ID:"+polldetails["id"]+"\n Question :"+polldetails["pollname"]+"\nOption :"+polldetails["options"]+"\n Votes :"+polldetails["votes"]
-					})
+					if content[3]=="all":
+						polldetails = self.poll.show_allpoll()
+						self.client.send_message({
+						"type": "stream",
+						"subject": msg["subject"],
+						"to": msg["display_recipient"],
+						"content": polldetails
+						})
+					else:
+						polldetails = self.poll.show_poll(content[3])
+						self.client.send_message({
+						"type": "stream",
+						"subject": msg["subject"],
+						"to": msg["display_recipient"],
+						"content": "Poll ID: **"+polldetails["id"]+"**\n Question : **"+polldetails["pollname"]+"**\nOption : **"+polldetails["options"]+"**\n Votes : **"+polldetails["votes"]+"**"
+						})
 				elif content[2] == "vote":
 					vote = self.poll.vote_poll(content[3],content[4])
 					self.client.send_message({
@@ -174,6 +183,23 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "Your Vote Has Been Recorded!"
 					})
+				elif content[2] == "delete":
+					if content[3] == "all":
+						deleted = self.poll.delete_allpoll()
+						self.client.send_message({
+						"type": "stream",
+						"subject": msg["subject"],
+						"to": msg["display_recipient"],
+						"content": "all polls has been removed from database"
+						})
+					else:
+						deleted = self.poll.delete_poll(content[3])
+						self.client.send_message({
+						"type": "stream",
+						"subject": msg["subject"],
+						"to": msg["display_recipient"],
+						"content": "The given poll has been removed from database"
+						})
 			if content[1] == 'motivate':
 				quote_data = self.motivate.get_quote()
 				self.client.send_message({
