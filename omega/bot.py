@@ -37,8 +37,8 @@ class ZulipBot(object):
 	def __init__(self):
 		self.client = zulip.Client(site="https://chunkzz.zulipchat.com/api/")
 		self.subscribe_all()
-		self.chatbot = ChatBot("Omega", trainer='chatterbot.trainers.ChatterBotCorpusTrainer')
-		self.chatbot.train("chatterbot.corpus.english")
+		#self.chatbot = ChatBot("Omega", trainer='chatterbot.trainers.ChatterBotCorpusTrainer')
+		#self.chatbot.train("chatterbot.corpus.english")
 		self.crypto = Crypto()
 		self.trans = Translate()
 		self.g = Giphy()
@@ -58,7 +58,7 @@ class ZulipBot(object):
 		self.poll = Poll()
 		self.subkeys = ["crypto", "translate", "define", "joke", "weather", 
 				"giphy", "pnr", "mustread", "poll", "hackernews", "hn", "HN", "motivate",
-				"twitter", "screenshot", "memo", "cricnews", "help"]
+				"twitter", "screenshot", "memo", "cricnews", "help", "shorturl"]
 
 	def urls(self, link):
 		urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link)
@@ -87,8 +87,55 @@ class ZulipBot(object):
 		message += "`screenshot` - Take Screenshot of Web Pages\n"
 		message += "`memo` - Create Memos in Cloud\n"
 		message += "`cricnews` - Get Cricket News\n"
+		message += "`shorturl` - Create goo.gl short URLs\n"
 		message += "\nIf you're bored Talk to Omega Bot, it will supercharge you"
 		return message
+	def help_sub(self, key):
+		key = key.lower()
+		message = "**Usage**\n"
+		if key == "crypto":
+			message += "`omega crypto <crypto-currency-code>` - To Get Price in USD\n"
+			message += "`omage crypto <crypto-currency-code> in <currency>` - To Get Price in Specified Currency\n"
+		elif key == "translate":
+			message += "`omega translate <phrase to be translated>` - To Get Translate from Foreign Language to English\n"
+		elif key == "define":
+			message += "`omega define <word>` - To Get Definition of the word\n"
+		elif key == "joke":
+			message += "`omega joke` - Get a Joke\n"
+		elif key == "weather":
+			message += "`omega weather <location>` - Get the weather details of the given place\n"
+		elif key == "giphy":
+			message += "`omega giphy <search word>` - Get a random GIF from Giphy related to the given search word\n"
+		elif key == "pnr":
+			message += "`omega pnr <valid pnr number>` - Get PNR Details of the Given PNR number\n"
+		elif key == "mustread":
+			message += "`omega mustread @**<User Mention>** <message>` - Pass Important Messages to Team Members\n"
+		elif key == "poll":
+			message += "`omega poll create <number of choices> question <question> option <option1> <option2>...` - To Create a New Poll. It will return with a Poll ID Number\n"
+			message += "`omega poll vote <POLL_ID> <Choice>` - To Vote for specified option\n"
+			message += "`omega poll show all` - List all available polls\n"
+			message += "`omega poll show <ID>` - List all details from specified Poll ID\n"
+			message += "`omega poll delete all` - Delete All Polls\n"
+			message += "`omega poll delete <ID>` - Delete Poll with specified ID\n"
+		elif key == "hn" or key == "hackernews":
+			message += "`omega hn` OR `omega hackernews` - Show Top 10 stories from Hacker News\n"
+		elif key == "motivate":
+			message += "`omega motivate` - Get a refreshing and motivating quote\n"
+		elif key == "twitter":
+			message += "`omega twitter post <tweet>` - Post a Tweet with given tweet\n"
+			message += "`omega twitter post_image <image_url> <tweet>` - Post a Tweet with given tweet and image url\n"
+		elif key == "screenshot":
+			message += "`omega screenshot <website url>` - Take a screenshot of the given url\n"
+		elif key == "memo":
+			message += "`omega memo <filename>` - Creates a New Memo file and returns its link\n"
+		elif key == "cricnews":
+			message += "`omega cricnews` - Get top 10 Cricket News\n"
+		elif key == "shorturl":
+			message += "`omega shorturl <url>` - Get a Shorten URL from goo.gl\n"
+		else:
+			message = self.help()
+			message += "\n{} is not a valid subfield\n".format(key)
+		return message		
 
 	def process(self, msg):
 		content = msg["content"].lower().split()
@@ -271,7 +318,7 @@ class ZulipBot(object):
 					"subject": stream_topic,
 					"content": quote_data
 					})
-			if content[1] == "shortenurl":
+			if content[1] == "shorturl":
 				short_url = self.shortenedurl.get_shorturl(content)
 				self.client.send_message({
 					"type": "stream",
@@ -295,8 +342,17 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": news  
 					})
-			if content[1] == "help":
+			if content[1] == "help" and len(content) == 2:
 				message = self.help()
+				self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": message  
+					})
+			if content[1] == "help" and len(content) > 2:
+				subkey = content[2]
+				message = self.help_sub(subkey)
 				self.client.send_message({
 					"type": "stream",
 					"subject": msg["subject"],
@@ -349,7 +405,7 @@ class ZulipBot(object):
 							"to": sender_email,
 							"content": message
 							})
-			if content[1] not in self.subkeys:
+			"""if content[1] not in self.subkeys:
 				ip = content[1:]
 				ip = " ".join(ip)
 				message = self.chatbot.get_response(ip).text
@@ -358,7 +414,7 @@ class ZulipBot(object):
 					"subject": msg["subject"],
 					"to": msg["display_recipient"],
 					"content": message
-					})
+					})"""
 		if self.urls(" ".join(content)):
 			summary = self.w.wiki(" ".join(content))
 			if summary:
