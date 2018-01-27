@@ -28,6 +28,7 @@ from pnr import Pnr
 from mustread import Mustread
 from screenshot import Ss
 from poll import Poll
+from cricket import Cricket
 
 p = pprint.PrettyPrinter()
 BOT_MAIL = "chunkzz-bot@chunkzz.zulipchat.com"
@@ -53,10 +54,11 @@ class ZulipBot(object):
 		self.pnr = Pnr()
 		self.mustread = Mustread()
 		self.ss = Ss()
+		self.cricket = Cricket()
 		self.poll = Poll()
-		self.subkeys = ["crypto", "translate", "define", "tell", "weather", 
+		self.subkeys = ["crypto", "translate", "define", "joke", "weather", 
 				"giphy", "pnr", "mustread", "poll", "hackernews", "hn", "HN", "motivate",
-				"twitter", "screenshot", "memo"]
+				"twitter", "screenshot", "memo", "cricnews", "help"]
 
 	def urls(self, link):
 		urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link)
@@ -67,8 +69,29 @@ class ZulipBot(object):
 		streams = [{"name": stream["name"]} for stream in json]
 		self.client.add_subscriptions(streams)
 
+	def help(self):
+		message = "**Welcome to Omega Bot**\nOmega Bot has various subfields\nType `omega help <subfield>` to get help for specific subfield.\n"
+		message += "\n**Subfields**\n"
+		message += "`crypto` - Get Crypto Currency Prices\n"
+		message += "`translate` - Translate Foreign Languages to English\n"
+		message += "`define` - Get Word Meanings\n"
+		message += "`joke` - Get Jokes\n"
+		message += "`weather` - Get Weather Details\n"
+		message += "`giphy` - Get GIFs from Giphy\n"
+		message += "`pnr` - Get PNR Status\n"
+		message += "`mustread` - Share Must Read Messages to Teammates\n"
+		message += "`poll` - Create Amazing Polls in Zulip\n"
+		message += "`hn` - Get Top Hacker News Results\n"
+		message += "`motivate` - Get Motivational Quotes\n"
+		message += "`twitter` - Tweet Directly from Zulip\n"
+		message += "`screenshot` - Take Screenshot of Web Pages\n"
+		message += "`memo` - Create Memos in Cloud\n"
+		message += "`cricnews` - Get Cricket News\n"
+		message += "\nIf you're bored Talk to Omega Bot, it will supercharge you"
+		return message
+
 	def process(self, msg):
-		content = msg["content"].split()
+		content = msg["content"].lower().split()
 		sender_email = msg["sender_email"]
 		ttype = msg["type"]
 		stream_name = msg['display_recipient']
@@ -122,7 +145,7 @@ class ZulipBot(object):
 					"to": msg["display_recipient"],
 					"content": "Screenshot taken :wink:\n[Screenshot Link]("+result+")"
 					})
-			if content[1] == "tell" and content[-1] == "joke":
+			if content[1] == "joke":
 				text = self.joke.tellJoke()
 				self.client.send_message({
 					"type": "stream",
@@ -263,6 +286,22 @@ class ZulipBot(object):
 					"to": stream_name,
 					"subject": stream_topic,
 					"content": news
+					})
+			if content[1] == "cricnews":
+				news = self.cricket.news()
+				self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": news  
+					})
+			if content[1] == "help":
+				message = self.help()
+				self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": message  
 					})
 			if content[1] == "twitter":
 				#tweets = self.tw.get()
