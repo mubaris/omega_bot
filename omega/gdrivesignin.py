@@ -38,14 +38,3 @@ def get_credentials():
             credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
-
-def main():
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v3', http=http)
-    file_metadata = {'name': 'photo.jpg'}
-    media = MediaFileUpload('L.jpg',
-                            mimetype='image/jpeg')
-    file = service.files().create(body=file_metadata,
-                                        media_body=media,
-                                        fields='id').execute()

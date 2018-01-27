@@ -229,7 +229,7 @@ class ZulipBot(object):
 				http = credentials.authorize(httplib2.Http())
 				service = discovery.build('drive', 'v3', http=http)
 				file_metadata = {
-					'name': content[3],
+					'name': content[2],
 					'mimeType': "text/plain"
 				}
 				file = service.files().create(body=file_metadata,
@@ -239,7 +239,7 @@ class ZulipBot(object):
 						"type": "stream",
 						"to": stream_name,
 						"subject": stream_topic,
-						"content": 'Memo created.\nView it at: ' + web_link['webViewLink']
+						"content": 'Memo created.\nView it at: ' + web_link
 						})
 			if content[1] == "pnr":
 				message = self.pnr.get_pnr(content[2])
