@@ -58,7 +58,7 @@ Send mails while you chat :wink:
 ![](./screenshots/CC.png)  
 
 ## Contributors
-* [https://github.com/mubaris](Mubaris NK)  
-* [https://github.com/Anupam-Dagar]Anupam Dagar  
-* [https://github.com/aswinzz]Aswin VB  
-* [https://github.com/aswanthkoleri]Aswanth Koleri    
+* [Mubaris NK](https://github.com/mubaris)  
+* [Anupam Dagar](https://github.com/Anupam-Dagar)  
+* [Aswin VB](https://github.com/aswinzz)  
+* [Aswanth Koleri](https://github.com/aswanthkoleri)    
