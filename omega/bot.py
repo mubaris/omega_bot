@@ -48,7 +48,7 @@ class ZulipBot(object):
 		self.poll = Poll()
 		self.subkeys = ["crypto", "translate", "define", "tell", "weather", 
 				"giphy", "pnr", "mustread", "poll", "hackernews", "hn", "HN", "motivate",
-				"twitter"]
+				"twitter", "screenshot"]
 
 	def urls(self, link):
 		urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link)
@@ -104,6 +104,15 @@ class ZulipBot(object):
 					"subject": msg["subject"],
 					"to": msg["display_recipient"],
 					"content": "**"+word+" means :"+"**"+'\n'+result  
+					})
+			if content[1] == "screenshot":
+				result = self.ss.get_ss(content[2])
+				print(result)
+				self.client.send_message({
+					"type": "stream",
+					"subject": msg["subject"],
+					"to": msg["display_recipient"],
+					"content": "Screenshot taken :wink:\n[Screenshot Link]("+result+")"
 					})
 			if content[1] == "tell" and content[2] == "a" and content[3] == "joke":
 				text = self.joke.tellJoke()
