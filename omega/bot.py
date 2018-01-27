@@ -239,7 +239,7 @@ class ZulipBot(object):
 						"type": "stream",
 						"to": stream_name,
 						"subject": stream_topic,
-						"content": 'Memo created.\nView it at: ' + web_link
+						"content": 'Memo created.\nView & edit it at: ' + web_link
 						})
 			if content[1] == "pnr":
 				message = self.pnr.get_pnr(content[2])
