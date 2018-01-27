@@ -20,7 +20,9 @@ Omega-Bot can :
 
 ###  PNR Status :
 Easy way to check you PNR status without going to other sites.  
-`omega pnr "pnr number"`  
+<br>
+<center>`omega pnr "pnr number"`</center>
+<br>  
 ![](./screenshots/PNR.png)
 
 
@@ -50,8 +52,8 @@ Send mails while you chat :wink:
 ![](./screenshots/CC.png)  
 
 ###  Weather:     
-`leave command here"`  
-![](./screenshots/CC.png)  
+`omega weather <place>`  
+![](./screenshots/weather.png)  
 
 ###  Gif Chat :
 `leave command here"`  
