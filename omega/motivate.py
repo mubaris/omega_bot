@@ -4,4 +4,4 @@ class Motivate(object):
 		self.data = requests.get('https://talaikis.com/api/quotes/random/').json()
 
 	def get_quote(self):
-		return '"content": \'"*' + self.data['quote'] + '*"\n -by ' + '**' + self.data['author'] + '**'
+		return "\"*" + self.data['quote'] + '*"\n -by ' + '**' + self.data['author'] + '**'
