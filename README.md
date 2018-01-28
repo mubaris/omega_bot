@@ -1,5 +1,6 @@
 # Welcome to Omega-Bot!
-## Team Chunkzz
+## Team Chunkzz 
+  [Website](https://mubaris.github.io/omega_bot/website/)
 ![](/screenshots/logo.png)
 ## **Omega-Bot** is a zulip chatbot   
 
