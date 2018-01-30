@@ -39,9 +39,9 @@ Twitter integration is meant for organizations to tweet directly from Zulip. It 
 
 ### Google Drive
 
-Download `clients.json` for Google Drive API and put it in `omega` folder.
+Download `client_secrets.json` for Google Drive API and put it in `omega` folder.
 
-`clients.json` should be for Organization Account, not private. So that file will be created in Org account.
+`client_secrets.json` should be for Organization Account, not private. So that file will be created in Org account.
 
 # Features
 
