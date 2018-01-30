@@ -61,7 +61,7 @@ Omega-Bot can :
 >* Create Polls
 >* Create memo on the cloud using Google Drive Integration
 >* Tweet directly from Zulip
->* Have a nice chat with Omega
+>* Have a nice chat with Omega (Intelligent Talking with the help of NLP)
 >* Stay up to date with summary provided by Wikipedia
 >* Get meanings of english vocablury, so that you don't stop while discussing
 >* Stay updated with cricket scores
