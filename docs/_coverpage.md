@@ -8,5 +8,5 @@
 * with 18 cool Integrations
 
 
-[GitHub](https://github.com/QingWei-Li/docsify/)
+[GitHub](https://github.com/aswanthkoleri/omega_bot/)
 [Get Started](#welcome-to-omega-bot)
