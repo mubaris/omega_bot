@@ -1,4 +1,4 @@
-<img src="/screenshots/logo.png" style="width : 150px; height: 100px; ">
+<img src="/omega_bot/screenshots/logo.png" style="width : 150px; height: 100px; ">
 
 # Omega <small>1.0</small>
 
